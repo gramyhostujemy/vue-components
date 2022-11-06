@@ -1,0 +1,21 @@
+{
+    "name": "@gramyhostujemy/vue-components",
+    "version": "1.0.0",
+    "description": "",
+    "author": "dawid@necodeo.com",
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gramyhostujemy/vue-components.git"
+    },
+    "main": "./index.mjs",
+    "dependencies": {
+    },
+    "engines": {
+        "node": ">=6.9.0"
+    },
+    "type": "module"
+}
