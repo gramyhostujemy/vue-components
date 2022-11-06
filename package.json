@@ -1,6 +1,6 @@
 {
     "name": "@gramyhostujemy/vue-components",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "",
     "author": "dawid@necodeo.com",
     "license": "MIT",
@@ -13,6 +13,8 @@
     },
     "main": "./index.mjs",
     "dependencies": {
+        "apexcharts": "^3.36.3",
+        "vue3-apexcharts": "^1.4.1"
     },
     "engines": {
         "node": ">=6.9.0"

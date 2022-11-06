@@ -1,4 +1,6 @@
 <script setup>
+import ApexCharts from 'vue3-apexcharts';
+
 const gameImage = new URL(`./assets/Query/cstrike.png`, import.meta.url);
 const mapImage = new URL(`./assets/Query/cstrike/de_dust2.png`, import.meta.url);
 </script>
@@ -39,25 +41,25 @@ const mapImage = new URL(`./assets/Query/cstrike/de_dust2.png`, import.meta.url)
             </div>
             <div style="width: 10%;">
                 <div>
-                    <apexchart
+                    <ApexCharts
                         type="radialBar"
                         width="50px"
                         height="50px"
                         :options="playersOptions"
                         :series="[Math.floor((server.players_num / server.players_max) * 100)]"
-                    ></apexchart>
+                    ></ApexCharts>
                 </div>
             </div>
         </div>
         <div class="background" :style="{backgroundImage: 'url(' + mapImage + ')'}"></div>
             <div class="chart">
-                <apexchart
+                <ApexCharts
                     type="area"
                     width="100%"
                     height="100%"
                     :options="server.game === 'minecraft' ? activityOptionsMC : activityOptionsCS"
                     :series="[server.logs]"
-                ></apexchart>
+                ></ApexCharts>
             </div>
         </div>
 </template>
