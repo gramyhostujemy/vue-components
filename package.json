@@ -1,6 +1,6 @@
 {
     "name": "@gramyhostujemy/vue-components",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "description": "",
     "author": "dawid@necodeo.com",
     "license": "MIT",
@@ -12,10 +12,6 @@
         "url": "https://github.com/gramyhostujemy/vue-components.git"
     },
     "main": "./index.mjs",
-    "dependencies": {
-        "apexcharts": "^3.36.3",
-        "vue3-apexcharts": "^1.4.1"
-    },
     "engines": {
         "node": ">=6.9.0"
     },

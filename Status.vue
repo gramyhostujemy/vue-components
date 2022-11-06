@@ -1,6 +1,4 @@
 <script setup>
-import ApexCharts from 'vue3-apexcharts';
-
 const gameImage = new URL(`./assets/Query/cstrike.png`, import.meta.url);
 const mapImage = new URL(`./assets/Query/cstrike/de_dust2.png`, import.meta.url);
 </script>
@@ -37,31 +35,140 @@ const mapImage = new URL(`./assets/Query/cstrike/de_dust2.png`, import.meta.url)
                 <div class="mid">{{ server.map }}</div>
             </div>
             <div style="width: 20%; text-align: center;">
-                <div class="mid" v-if="server.players_max">{{ server.players_num }} / {{ server.players_max }}</div>
+                <div class="mid">{{ server.players_num }} / {{ server.players_max }}</div>
             </div>
-            <div style="width: 10%;">
-                <div>
-                    <ApexCharts
-                        type="radialBar"
-                        width="50px"
-                        height="50px"
-                        :options="playersOptions"
-                        :series="[Math.floor((server.players_num / server.players_max) * 100)]"
-                    ></ApexCharts>
-                </div>
+            <div style="width: 50px; height: 50px">
+                <apexchart
+                    type="radialBar"
+                    width="50px"
+                    height="50px"
+                    :options="{
+                        chart: {
+                            height: 30,
+                            type: 'radialBar',
+                            sparkline: {
+                                enabled: true
+                            },
+                        },
+                        plotOptions: {
+                            radialBar: {
+                                dataLabels: {
+                                    show: false,
+                                },
+                                track: {
+                                    background: '#41ffc3',
+                                    opacity: 0.2,
+                                },
+                                startAngle: -135,
+                                endAngle: 135,
+                                hollow: {
+                                    size: '30%',
+                                },
+                            },
+                        },
+                        colors: ['#41ffc3'],
+                    }"
+                    :series="[Math.floor((server.players_num / server.players_max) * 100)]"
+                ></apexchart>
             </div>
         </div>
         <div class="background" :style="{backgroundImage: 'url(' + mapImage + ')'}"></div>
-            <div class="chart">
-                <ApexCharts
-                    type="area"
-                    width="100%"
-                    height="100%"
-                    :options="server.game === 'minecraft' ? activityOptionsMC : activityOptionsCS"
-                    :series="[server.logs]"
-                ></ApexCharts>
-            </div>
+        <div class="chart">
+            <apexchart
+                type="area"
+                width="480px"
+                height="69px"
+                :options="{
+                    stroke: {
+                        curve: 'stepline',
+                        colors: ['#41ffc34f'],
+                        width: [1]
+                    },
+                    chart: {
+                        animations: {
+                            enabled: true,
+                            easing: 'easeinout',
+                            speed: 999,
+                            animateGradually: {
+                                enabled: true,
+                                delay: 150
+                            },
+                            dynamicAnimation: {
+                                enabled: true,
+                                speed: 350
+                            },
+                        },
+                        type: 'area',
+                        zoom: {
+                            enabled: false,
+                        },
+                        sparkline: {
+                            enabled: true
+                        },
+                        toolbar: {
+                            show: false,
+                        },
+                    },
+                    grid: {
+                        show: false,
+                        row: {
+                            opacity: 0.1,
+                        },
+                        padding: {
+                            left: 0,
+                            right: 0
+                        },
+                    },
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            colorStops: [ 
+                                [
+                                    {
+                                        offset: 0.6,
+                                        color: '#41ffc3',
+                                        opacity: 0.4
+                                    },
+                                    {
+                                        offset: 100,
+                                        color: '#41ffc3',
+                                        opacity: 0
+                                    }
+                                ],
+                            ],
+                        },
+                    },
+                    xaxis: {
+                        show: false,
+                        seriesName: 'time',
+                        type: 'datetime',
+                        labels: {
+                            formatter: () => '',
+                        },
+                        axisBorder: {
+                            show: false,
+                        },
+                        axisTicks: {
+                            show: false,
+                        },
+                    },
+                    yaxis: {
+                        show: false,
+                        seriesName: 'players',
+                        min: 0,
+                        max: server.players_max,
+                    },
+                    tooltip: {
+                        enabled: false,
+                    },
+                }"
+                :series="server.logs"
+            ></apexchart>
         </div>
+    </div>
 </template>
 
 <script>
@@ -78,210 +185,6 @@ export default {
             await navigator.clipboard.writeText(mytext);
         }
     },
-    data() {
-        return {
-            playersOptions: {
-                chart: {
-                    height: 30,
-                    type: "radialBar",
-                    sparkline: {
-                        enabled: true
-                    },
-                },
-                plotOptions: {
-                    radialBar: {
-                        dataLabels: {
-                            show: false,
-                        },
-                        track: {
-                            background: "#41ffc3",
-                            opacity: 0.2,
-                        },
-                        startAngle: -90 - 45,
-                        endAngle: 90 + 45,
-                        hollow: {
-                            size: "30%",
-                        },
-                    },
-                },
-                colors: ["#41ffc3"],
-            },
-            activityOptionsCS: {
-                stroke: {
-                    curve: 'stepline',
-                    colors: ['#41ffc34f'],
-                    width: [1]
-                },
-                chart: {
-                    animations: {
-                        enabled: true,
-                        easing: 'easeinout',
-                        speed: 999,
-                        animateGradually: {
-                            enabled: true,
-                            delay: 150
-                        },
-                        dynamicAnimation: {
-                            enabled: true,
-                            speed: 350
-                        },
-                    },
-                    type: "area",
-                    zoom: {
-                        enabled: false,
-                    },
-                    sparkline: {
-                        enabled: true
-                    },
-                    toolbar: {
-                        show: false,
-                    },
-                },
-                grid: {
-                    show: false,
-                    row: {
-                        opacity: 0.1,
-                    },
-                    padding: {
-                        left: 0,
-                        right: 0
-                    },
-                },
-                dataLabels: {
-                    enabled: false,
-                },
-                fill: {
-                    type: "gradient",
-                    gradient: {
-                        colorStops: [ 
-                            [
-                                {
-                                    offset: 0.6,
-                                    color: '#41ffc3',
-                                    opacity: 0.4
-                                },
-                                {
-                                    offset: 100,
-                                    color: '#41ffc3',
-                                    opacity: 0
-                                }
-                            ],
-                        ],
-                    },
-                },
-                xaxis: {
-                    show: false,
-                    seriesName: 'time',
-                    type: 'datetime',
-                    labels: {
-                        formatter: () => '',
-                    },
-                    axisBorder: {
-                        show: false,
-                    },
-                    axisTicks: {
-                        show: false,
-                    },
-                },
-                yaxis: {
-                    show: false,
-                    seriesName: 'players',
-                    min: 0,
-                    max: 32,
-                },
-                tooltip: {
-                    enabled: false,
-                },
-            },
-            activityOptionsMC: {
-                stroke: {
-                    curve: 'stepline',
-                    colors: ['#41ffc34f'],
-                    width: [1]
-                },
-                chart: {
-                    animations: {
-                        enabled: true,
-                        easing: 'easeinout',
-                        speed: 999,
-                        animateGradually: {
-                            enabled: true,
-                            delay: 150
-                        },
-                        dynamicAnimation: {
-                            enabled: true,
-                            speed: 350
-                        },
-                    },
-                    type: "area",
-                    zoom: {
-                        enabled: false,
-                    },
-                    sparkline: {
-                        enabled: true
-                    },
-                    toolbar: {
-                        show: false,
-                    },
-                },
-                grid: {
-                    show: false,
-                    row: {
-                        opacity: 0.1,
-                    },
-                    padding: {
-                        left: 0,
-                        right: 0
-                    },
-                },
-                dataLabels: {
-                    enabled: false,
-                },
-                fill: {
-                    type: "gradient",
-                    gradient: {
-                        colorStops: [ 
-                            [
-                                {
-                                    offset: 0.6,
-                                    color: '#41ffc3',
-                                    opacity: 0.4
-                                },
-                                {
-                                    offset: 100,
-                                    color: '#41ffc3',
-                                    opacity: 0
-                                }
-                            ],
-                        ],
-                    },
-                },
-                xaxis: {
-                    show: false,
-                    seriesName: 'time',
-                    type: 'datetime',
-                    labels: {
-                        formatter: () => '',
-                    },
-                    axisBorder: {
-                        show: false,
-                    },
-                    axisTicks: {
-                        show: false,
-                    },
-                },
-                yaxis: {
-                    show: false,
-                    seriesName: 'players',
-                    min: 0,
-                    max: 6,
-                },
-                tooltip: {
-                    enabled: false,
-                },
-            },
-        };
-    },
 };
 </script>
 
@@ -291,7 +194,7 @@ export default {
 .servers {
     color: white;
     margin: 0 auto;
-    max-width: 500px;
+    width: 500px;
     background-color: #3b3b3b;
     font-size: 16px;
     color: #cefff6;
@@ -354,5 +257,14 @@ export default {
     bottom: 10px;
     box-sizing: border-box;
     opacity: 0.5;
+}
+
+.servers .chart .apexcharts-canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+.servers .chart svg {
+    width: 100% !important;
+    height: 100% !important;
 }
 </style>
